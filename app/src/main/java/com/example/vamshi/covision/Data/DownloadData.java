@@ -3,13 +3,11 @@ package com.example.vamshi.covision.Data;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.vamshi.covision.MainActivity;
+import com.example.vamshi.covision.UI.MainActivity;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.realm.Realm;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
