@@ -12,7 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.vamshi.covision.Adapters.CustomListViewAdapter;
+import com.example.vamshi.covision.Data.Fan;
 import com.example.vamshi.covision.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -23,11 +28,14 @@ public class DetailsActivity extends AppCompatActivity {
     Button play_button;
     ImageView song_image;
     ListView covers_list;
+    List<Fan> mFans;
+    CustomListViewAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        mFans = new ArrayList<>();
         song_name = (TextView)findViewById(R.id.song_name);
         listens = (TextView)findViewById(R.id.listens);
         artist_name = (TextView)findViewById(R.id.artist_name);
@@ -39,11 +47,15 @@ public class DetailsActivity extends AppCompatActivity {
         song_name.setText("Song:- " + in.getStringExtra("songName"));
         listens.setText("Played " + in.getStringExtra("listens") + "times");
         artist_name.setText("Artist:- " + in.getStringExtra("artistName"));
+        final String fLink = in.getStringExtra("songImage");
         Glide.with(this).load(in.getStringExtra("songImage").trim()).into(song_image);
         record_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(DetailsActivity.this, "Clicked Record", Toast.LENGTH_SHORT).show();
+                Intent in = new Intent(DetailsActivity.this, RecordingActivity.class);
+                in.putExtra("link" ,fLink);
+                startActivity(in);
             }
         });
 
@@ -53,6 +65,17 @@ public class DetailsActivity extends AppCompatActivity {
                 Toast.makeText(DetailsActivity.this, "Clicked Play", Toast.LENGTH_SHORT).show();
             }
         });
+
+        for(int i =0; i<2; i++){
+
+            Fan newFan = new Fan(in.getStringExtra("artistName"),in.getStringExtra("artistName").trim(),
+                    "Played " + in.getStringExtra("listens") + "times");
+            mFans.add(newFan);
+        }
+        myAdapter = new CustomListViewAdapter(this, mFans);
+        covers_list.setAdapter(myAdapter);
+
+
 
     }
 }
